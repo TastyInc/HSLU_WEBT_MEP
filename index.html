@@ -28,27 +28,33 @@
 			</section>
 			<section id="form">
 				<div id="form-headers">
-					<a href="">
-						<div class="form-header form-header-active">
-							<h1>Login</h1>
-						</div>
-					</a>
-					<a href="">
-						<div class="form-header">
-							<h1>Register</h1>
-						</div>
-					</a>
-					<a href="">
-						<div class="form-header">
-							<h1>Guest</h1>
-						</div>
-					</a>
+					<div id="form-header-login" class="form-header active">
+						<h1>Login</h1>
+					</div>
+					<div id="form-header-register" class="form-header">
+						<h1>Register</h1>
+					</div>
+					<div id="form-header-guest" class="form-header">
+						<h1>Guest</h1>
+					</div>
 				</div>
 				<div id="form-sections">
-					<div class="form-section form-section-active">
+					<div id="form-login" class="form-section active">
+						<p>Please fill in this form to log into your account.</p>
+						<hr>
+						<label for="username"><b>Username</b></label>
+						<input type="text" placeholder="Enter Username" name="username" id="registerUsername" required>
+					
+						<label for="pw"><b>Password</b></label>
+						<input type="password" placeholder="Enter Password" name="pw" id="registerPw" required>
+						<hr>
+
+						<button type="submit" id="loginBtnSubmit" class="btnSubmit br4">Login</button>
+					</div>
+					<div id="form-register" class="form-section">
 						<p>Please fill in this form to create an account.</p>
 						<hr>
-						<label for="username"><b>Email</b></label>
+						<label for="username"><b>Username</b></label>
 						<input type="text" placeholder="Enter Username" name="username" id="registerUsername" required>
 					
 						<label for="pw"><b>Password</b></label>
@@ -58,10 +64,12 @@
 						<input type="password" placeholder="Repeat Password" name="registerPwRepeat" id="registerPwRepeat" required>
 						<hr>
 					
-						<button type="submit" id="registerBtnSubmit" class="btnSubmit">Register</button>
-					  </div>
-					  
-
+						<button type="submit" id="registerBtnSubmit" class="btnSubmit br4">Register</button>
+					</div>
+					<div id="form-guest" class="form-section">
+						<p>Play the game as a guest. No scores will be saved :(</p>
+						
+					</div>
 				</div>	
 
 
