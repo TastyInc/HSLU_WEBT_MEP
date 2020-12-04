@@ -7,46 +7,73 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="author" content="Luca Sommer">
 		<meta name="description" content="WEBT MEP">
-		<title>Luca Sommer</title>
+		<title>WEBT MEP - Luca Sommer</title>
 
-		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
 		<header>
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="/">Macromelus</a>
-				</div>
-				<button id="navTogglerButton" class="navbar-toggler toggler-example visible-s" type="button" data-toggle="collapse" data-target="#navExpand" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="dark-blue-text">
-						<i class="fas fa-bars fa-1x"></i>
-					</span>
-				</button>
-				<div class="collapse navbar-collapse" id="navExpand">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="/Arcade"><i class="fas fa-gamepad"></i> Arcade</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" asp-actio="" n="Index" href="/Cod"><i class="fas fa-bomb"></i> Cod</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/Guestbook"><i class="fas fa-atlas"></i> Guestbook</a>
-						</li>
-					</ul>
+			<nav>
+				<div id="nav-links" class="centered">	
+					<a href="#home">Home</a>
+					<a href="#intro">Intro</a>
+					<a href="#form">Login</a>
+					<a href="#game">Game</a>
 				</div>
 			</nav>
 		</header>
-		<div class="container">
-			<div>
+		<div id="container">
+			<section id="intro">
+				<h1>Intro</h1>
+			</section>
+			<section id="form">
+				<div id="form-headers">
+					<a href="">
+						<div class="form-header form-header-active">
+							<h1>Login</h1>
+						</div>
+					</a>
+					<a href="">
+						<div class="form-header">
+							<h1>Register</h1>
+						</div>
+					</a>
+					<a href="">
+						<div class="form-header">
+							<h1>Guest</h1>
+						</div>
+					</a>
+				</div>
+				<div id="form-sections">
+					<div class="form-section form-section-active">
+						<p>Please fill in this form to create an account.</p>
+						<hr>
+						<label for="username"><b>Email</b></label>
+						<input type="text" placeholder="Enter Username" name="username" id="registerUsername" required>
+					
+						<label for="pw"><b>Password</b></label>
+						<input type="password" placeholder="Enter Password" name="pw" id="registerPw" required>
+					
+						<label for="registerPwRepeat"><b>Repeat Password</b></label>
+						<input type="password" placeholder="Repeat Password" name="registerPwRepeat" id="registerPwRepeat" required>
+						<hr>
+					
+						<button type="submit" id="registerBtnSubmit" class="btnSubmit">Register</button>
+					  </div>
+					  
 
-			</div>
+				</div>	
 
+
+			</section>
+			<section id="game">
+
+			</section>
 
 
 		</div>
 		
 		
-		<script src="/js/scripts.js"></script>
+		<script src="js/scripts.js"></script>
 	</body>
 </html>
