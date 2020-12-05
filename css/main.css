@@ -22,7 +22,6 @@ body {
 /* NAVIGATION */
 nav {
     overflow: hidden;
-    background-color: #233434;
     position: fixed;
     top: 0;
     width: 100%;
@@ -41,6 +40,23 @@ nav {
 #nav-links a:hover {
     background: #e2f2f2;
     color: #233434;
+}
+
+/* FILLER */
+#filler {
+    outline: 0px;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    max-width:100%; /* Fixt Problem mit horizontaler Scrollbar...*/ 
+    height: 100vh;
+}
+
+#filler > #filler-canvas {
+    outline: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
 }
 
 /* FORM */
