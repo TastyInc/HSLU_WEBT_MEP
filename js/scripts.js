@@ -28,33 +28,15 @@ function formHeaderClick(formName) {
     document.getElementById("form-" + formName).classList.add("active");
 }
 
-/* FILLER CANVAS*/
-
-
-/*
-var goToTop = document.querySelector('#backToTop');
-
-goToTop.addEventListener("click", function(e){
-    window.scroll({top: 0, left: 0, behavior: 'smooth'});
-  //scroll smoothly back to the top of the page
-});
-*/
-
-let viewStillInFiller = true;
+/* FILLER CANVAS */
 
 window.addEventListener("scroll", function(){
     let nav = document.querySelector("nav");
 
-    if(window.scrollY == 0){
-        nav.style.backgroundColor = "transparent"; 
-    } else {
+    if(window.scrollY >= window.innerHeight - 60){
         nav.style.backgroundColor = "#233434";
-
-        if(window.scrollY >= window.innerHeight){
-            viewStillInFiller = false;
-        } else {
-            viewStillInFiller = true;
-        }
+    } else {
+        nav.style.backgroundColor = "transparent"; 
     }
 });
 
@@ -63,9 +45,7 @@ const c = canvas.getContext('2d');
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 
-
 class Particle {
-
     constructor(velX, velY, posX, posY) {
         this.velX = velX;
         this.velY = velY;
@@ -87,7 +67,6 @@ class Particle {
             c.fill();
             c.closePath();
         } 
-
     }
 }
 
@@ -95,32 +74,34 @@ let fillerCanvasInterval = setInterval(createParticle, 100);
 let particles = new Array();
 
 function createParticle() {
-    let posX;
-    let posY;
-
-    let rng = Math.floor(Math.random() * 4);
-
-    switch(rng) {
-        case 0:
-            posX = 0
-            posY = Math.random() * HEIGHT;
-            break;
-        case 1:
-            posX = WIDTH
-            posY = Math.random() * HEIGHT;
-            break;
-        case 2:
-            posX = Math.random() * WIDTH;
-            posY = HEIGHT;
-            break;
-        case 3:
-            posX = Math.random() * WIDTH;
-            posY = 0;
-            break;
-        default:
+    if(particles.length < 50 && window.scrollY < window.innerHeight) {
+        let posX;
+        let posY;
+    
+        let rng = Math.floor(Math.random() * 4);
+    
+        switch(rng) {
+            case 0:
+                posX = 0
+                posY = Math.random() * HEIGHT;
+                break;
+            case 1:
+                posX = WIDTH
+                posY = Math.random() * HEIGHT;
+                break;
+            case 2:
+                posX = Math.random() * WIDTH;
+                posY = HEIGHT;
+                break;
+            case 3:
+                posX = Math.random() * WIDTH;
+                posY = 0;
+                break;
+            default:
+        }
+    
+        particles.push(new Particle(Math.random() * 2 - 1, Math.random() * 2 - 1, posX, posY));
     }
-
-    particles.push(new Particle(Math.random() * 2 - 1, Math.random() * 2 - 1, posX, posY));
 }
 
 
@@ -129,8 +110,6 @@ window.onload = function() {
     canvas.height = HEIGHT;
     animateFillerCanvas();
 }
-
-
 
 function animateFillerCanvas() {
     let now = Date.now();
@@ -148,8 +127,5 @@ function animateFillerCanvas() {
 
     this.then = now;
 
-    if(viewStillInFiller){
-        requestAnimationFrame(animateFillerCanvas);
-    }
-
+    requestAnimationFrame(animateFillerCanvas);
 }
