@@ -74,20 +74,22 @@ function createParticle() {
 
 
 window.onresize = function() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = WIDTH = window.innerWidth;
+    canvas.height = HEIGHT = window.innerHeight;
 };
 
 window.onload = function() {
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
+
     animateFillerCanvas();
 }
 
 //Animation Loop for canvas
 function animateFillerCanvas() {
+    let now = Date.now();
+
     if(window.scrollY < window.innerHeight) {
-        let now = Date.now();
         let dt = (now - this.then) / 1000;
     
         c.clearRect(0, 0, WIDTH, HEIGHT);
@@ -99,9 +101,9 @@ function animateFillerCanvas() {
                 particles.splice(i, 1);
             }
         }
-
-        this.then = now;
     }
+
+    this.then = now;
 
     requestAnimationFrame(animateFillerCanvas);
 }

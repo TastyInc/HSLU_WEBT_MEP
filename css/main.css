@@ -54,24 +54,9 @@ nav a:hover {
 }
 
 /* FORM */
-.form-header {
-    float: left;
-    display: block;
-    height: 100%;
-    width: 33%;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    border-bottom: 5px solid transparent;
-}
-
 .form-header:hover {
     cursor: pointer;
     border-bottom: 5px solid #e2f2f2;
-}
-
-#form-headers {
-    height: 60px;
 }
 
 #form-headers > .active {
@@ -88,7 +73,7 @@ nav a:hover {
 
 #form-sections > .active {
     display: inherit !important;
-    height: 500px;
+    height: 300px;
 }
 
 #form-sections > .active > .btnSubmit {
@@ -113,7 +98,7 @@ nav a:hover {
 
 input[type=text], input[type=password] {
     padding: 8px;
-    margin: 0 8px;
+    margin: 8px 0;
     box-sizing: border-box;
     border: none;
     background: #f1f1f1;

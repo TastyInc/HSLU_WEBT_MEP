@@ -45,55 +45,50 @@
 			</section>
 			<section id="form">
 				<div id="form-headers" class="w3-row">
-					<div id="form-header-login" class="form-header active">
+					<div id="form-header-login" class="form-header active w3-third">
 						<h1>Login</h1>
 					</div>
-					<div id="form-header-register" class="form-header">
+					<div id="form-header-register" class="form-header w3-third">
 						<h1>Register</h1>
 					</div>
-					<div id="form-header-guest" class="form-header">
+					<div id="form-header-guest" class="form-header w3-third">
 						<h1>Guest</h1>
 					</div>
 				</div>
 				<div id="form-sections">
 					<div id="form-login" class="form-section active">
-
-						
-						<p>Please fill in this form to log into your account.</p>
+						<p>Fill in this form to log into your account...</p>
 						<hr>
-						<div class="w3-row">
-							<div class="w3-quarter w3-container">
-								<label for="username"><b>Username</b></label>
+						<div class="w3-row w3-margin-bottom">
+							<div class="w3-quarter">
+								<label for="loginUsername"><b>Username</b></label>
 							</div>
-							<div class="w3-threequarter w3-container">
-								<input type="text" placeholder="Enter Username" name="username" id="loginUsername" required>
-							</div>
-						</div>
-						<div class="w3-row">
-							<div class="w3-quarter w3-container">
-								<label for="pw"><b>Password</b></label>
-							</div>
-							<div class="w3-threequarter w3-container">
-								<input type="password" placeholder="Enter Password" name="pw" id="loginPw" required>
+							<div class="w3-threequarter">
+								<input type="text" placeholder="Enter Username" name="loginUsername" id="loginUsername" required>
 							</div>
 						</div>
-						<div class="w3-row">
-							<button type="submit" id="loginBtnSubmit" class="w3-btn w3-ripple w3-green">Login</button>
+						<div class="w3-row w3-margin-bottom">
+							<div class="w3-quarter">
+								<label for="loginPw"><b>Password</b></label>
+							</div>
+							<div class="w3-threequarter">
+								<input type="password" placeholder="Enter Password" name="loginPw" id="loginPw" required>
+							</div>
 						</div>
+						<button type="submit" id="loginBtnSubmit" class="w3-btn w3-ripple w3-green">Login</button>
 					  </div>
 					<div id="form-register" class="form-section">
-						<p>Please fill in this form to create an account.</p>
+						<p>Fill in this form to create an account...</p>
 						<hr>
-						<label for="username"><b>Username</b></label>
-						<input type="text" placeholder="Enter Username" name="username" id="registerUsername" required>
+						<label for="registerUsername"><b>Username</b></label>
+						<input type="text" placeholder="Enter Username" name="registerUsername" id="registerUsername" required>
 					
-						<label for="pw"><b>Password</b></label>
-						<input type="password" placeholder="Enter Password" name="pw" id="registerPw" required>
+						<label for="registerPw"><b>Password</b></label>
+						<input type="password" placeholder="Enter Password" name="registerPw" id="registerPw" required>
 					
 						<label for="registerPwRepeat"><b>Repeat Password</b></label>
 						<input type="password" placeholder="Repeat Password" name="registerPwRepeat" id="registerPwRepeat" required>
 						<hr>
-					
 						<button type="submit" id="registerBtnSubmit" class="w3-btn w3-ripple w3-green">Register</button>
 					</div>
 					<div id="form-guest" class="form-section">
@@ -101,7 +96,6 @@
 						
 					</div>
 				</div>	
-
 
 			</section>
 			<section id="game">
