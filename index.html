@@ -9,17 +9,16 @@
 		<meta name="description" content="WEBT MEP">
 		<title>WEBT MEP - Luca Sommer</title>
 
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
 		<header>
-			<nav>
-				<div id="nav-links" class="centered">	
-					<a href="#filler">Home</a>
-					<a href="#intro">Intro</a>
-					<a href="#form">Login</a>
-					<a href="#game">Game</a>
-				</div>
+			<nav class="w3-top w3-bar">
+				<a class="w3-bar-item w3-button w3-mobile" href="#filler">Home</a>
+				<a class="w3-bar-item w3-button w3-mobile" href="#intro">Intro</a>
+				<a class="w3-bar-item w3-button w3-mobile" href="#form">Login</a>
+				<a class="w3-bar-item w3-button w3-mobile" href="#game">Game</a>
 			</nav>
 		</header>
 		<section id="filler">
@@ -27,7 +26,7 @@
 				
 			</canvas>
 		</section>
-		<div id="container">
+		<div id="container" class="w3-container">
 			<section id="intro">
 				<h1>Intro</h1>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra tortor felis, sit amet blandit nisi pellentesque sit amet. Etiam fermentum lacinia ante a ultrices. Donec sit amet quam vel augue porta ultrices. Curabitur sagittis magna quis est accumsan congue. Curabitur dictum, augue quis ornare mattis, enim elit euismod lacus, id convallis est eros eget metus. Morbi ante nibh, scelerisque vitae tortor vitae, posuere consequat ante. Suspendisse lacinia bibendum malesuada. Aliquam erat volutpat. Aliquam bibendum aliquam orci.</p>
@@ -45,7 +44,7 @@
 
 			</section>
 			<section id="form">
-				<div id="form-headers">
+				<div id="form-headers" class="w3-row">
 					<div id="form-header-login" class="form-header active">
 						<h1>Login</h1>
 					</div>
@@ -58,17 +57,30 @@
 				</div>
 				<div id="form-sections">
 					<div id="form-login" class="form-section active">
+
+						
 						<p>Please fill in this form to log into your account.</p>
 						<hr>
-						<label for="username"><b>Username</b></label>
-						<input type="text" placeholder="Enter Username" name="username" id="registerUsername" required>
-					
-						<label for="pw"><b>Password</b></label>
-						<input type="password" placeholder="Enter Password" name="pw" id="registerPw" required>
-						<hr>
-
-						<button type="submit" id="loginBtnSubmit" class="btnSubmit br4">Login</button>
-					</div>
+						<div class="w3-row">
+							<div class="w3-quarter w3-container">
+								<label for="username"><b>Username</b></label>
+							</div>
+							<div class="w3-threequarter w3-container">
+								<input type="text" placeholder="Enter Username" name="username" id="loginUsername" required>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class="w3-quarter w3-container">
+								<label for="pw"><b>Password</b></label>
+							</div>
+							<div class="w3-threequarter w3-container">
+								<input type="password" placeholder="Enter Password" name="pw" id="loginPw" required>
+							</div>
+						</div>
+						<div class="w3-row">
+							<button type="submit" id="loginBtnSubmit" class="w3-btn w3-ripple w3-green">Login</button>
+						</div>
+					  </div>
 					<div id="form-register" class="form-section">
 						<p>Please fill in this form to create an account.</p>
 						<hr>
@@ -82,7 +94,7 @@
 						<input type="password" placeholder="Repeat Password" name="registerPwRepeat" id="registerPwRepeat" required>
 						<hr>
 					
-						<button type="submit" id="registerBtnSubmit" class="btnSubmit br4">Register</button>
+						<button type="submit" id="registerBtnSubmit" class="w3-btn w3-ripple w3-green">Register</button>
 					</div>
 					<div id="form-guest" class="form-section">
 						<p>Play the game as a guest. No scores will be saved :(</p>
@@ -93,13 +105,16 @@
 
 			</section>
 			<section id="game">
-
+				<canvas id="game-canvas">	
+						
+				</canvas>
 			</section>
 
 
 		</div>
 		
-		
-		<script src="js/scripts.js"></script>
+		<script src="js/mainScripts.js"></script>	
+		<script src="js/fillerCanvas.js"></script>	
+		<script src="js/gameCore.js"></script>
 	</body>
 </html>
