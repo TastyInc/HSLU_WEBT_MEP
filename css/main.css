@@ -91,6 +91,16 @@ nav a:hover {
     opacity: 1;
 }
 
+/* Game Canvas */
+
+#game {
+    width: 100%;
+}
+
+#game-canvas {
+    width: 100;
+
+}
 
 
 
@@ -108,19 +118,6 @@ button:hover {
     box-shadow: none !important;
     background-color: #46a049!important;
 }
-
-
-.centered {
-    margin: auto;
-    width: fit-content;
-}
-
-.br4 {
-    border-radius: 4px;
-}
-
-
-
 
 /* MOBILE VIEW */
 @media (max-width: 600px) {
