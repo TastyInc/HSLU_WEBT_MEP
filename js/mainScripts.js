@@ -46,7 +46,47 @@ function formHeaderClick(formName) {
 
 function submitLogin() {
     let username = document.getElementById("loginUsername").value;
-    let password = document.getElementById("loginPw")
+    let password = document.getElementById("loginPw").value;
 
-    console.log(username);
+}
+
+function submitRegister() {
+    let username = document.getElementById("registerUsername").value;
+    let password = document.getElementById("registerPw").value;
+    let pwRepeat = document.getElementById("registerPwRepeat").value;
+
+    let alertBox = document.getElementById("alertBox");
+
+    let error = "";
+
+    if (password != pwRepeat) {
+        error += "<p>Die Passwörter stimmen nicht überein!</p>";
+    }
+
+    //TODO
+    var xhr = new XMLHttpRequest();
+    xhr.open("SET", "server.php", false); //<- Synchron
+    xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+        } else {
+          console.error(xhr.statusText);
+        }
+      }
+    };
+    xhr.onerror = function (e) {
+      console.error(xhr.statusText);
+    };
+    xhr.send(password); 
+
+
+
+    if(error.length > 0) {
+        alertBox.innerHTML = error;
+        alertBox.style.display = "block";
+    
+        console.log(alertBox.style.display);
+    }
+
 }

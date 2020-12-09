@@ -71,7 +71,7 @@
 					</div>
 				</div>
 				<div id="form-sections">
-					<div id="form-login" class="form-section active">
+					<form id="form-login" class="form-section active" onsubmit="return false" >
 						<p>Fill in this form to log into your account...</p>
 						<hr>
 						<div class="w3-row w3-margin-bottom">
@@ -87,12 +87,12 @@
 								<label for="loginPw"><b>Password</b></label>
 							</div>
 							<div class="w3-threequarter">
-								<input type="password" placeholder="Enter Password" name="loginPw" id="loginPw" required minlength="4">
+								<input type="password" placeholder="Enter Password" name="loginPw" id="loginPw" required>
 							</div>
 						</div>
 						<button type="submit" id="loginBtnSubmit" class="w3-btn w3-ripple w3-green" onclick="submitLogin()">Login</button>
-					  </div>
-					<div id="form-register" class="form-section">
+					</form>
+					<form id="form-register" class="form-section" onsubmit="return false" >
 						<p>Fill in this form to create an account...</p>
 						<hr>
 						<div class="w3-row w3-margin-bottom">
@@ -108,7 +108,7 @@
 								<label for="registerPw"><b>Password</b></label>
 							</div>
 							<div class="w3-threequarter">
-								<input type="password" placeholder="Enter Password" name="registerPw" id="registerPw" required>
+								<input type="password" placeholder="Enter Password" name="registerPw" id="registerPw" required minlength="4">
 							</div>
 						</div>
 						<div class="w3-row w3-margin-bottom">
@@ -119,8 +119,8 @@
 								<input type="password" placeholder="Repeat Password" name="registerPwRepeat" id="registerPwRepeat" required>
 							</div>
 						</div>
-						<button type="submit" id="registerBtnSubmit" class="w3-btn w3-ripple w3-green">Register</button>
-					</div>
+						<button type="button" id="registerBtnSubmit" class="w3-btn w3-ripple w3-green" onclick="submitRegister()">Register</button>
+					</form>
 					<div id="form-guest" class="form-section">
 						<p>Play the game as a guest. No scores will be saved :(</p>
 					</div>
