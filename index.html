@@ -79,7 +79,7 @@
 								<label for="loginUsername"><b>Username</b></label>
 							</div>
 							<div class="w3-threequarter">
-								<input type="text" placeholder="Enter Username" name="loginUsername" id="loginUsername" required>
+								<input type="text" placeholder="Enter Username" name="loginUsername" id="loginUsername" required maxlength="20">
 							</div>
 						</div>
 						<div class="w3-row w3-margin-bottom">
@@ -87,10 +87,10 @@
 								<label for="loginPw"><b>Password</b></label>
 							</div>
 							<div class="w3-threequarter">
-								<input type="password" placeholder="Enter Password" name="loginPw" id="loginPw" required>
+								<input type="password" placeholder="Enter Password" name="loginPw" id="loginPw" required minlength="4">
 							</div>
 						</div>
-						<button type="submit" id="loginBtnSubmit" class="w3-btn w3-ripple w3-green">Login</button>
+						<button type="submit" id="loginBtnSubmit" class="w3-btn w3-ripple w3-green" onclick="submitLogin()">Login</button>
 					  </div>
 					<div id="form-register" class="form-section">
 						<p>Fill in this form to create an account...</p>
@@ -124,6 +124,7 @@
 					<div id="form-guest" class="form-section">
 						<p>Play the game as a guest. No scores will be saved :(</p>
 					</div>
+					<div id="alertBox"></div>
 				</div>	
 
 			</section>

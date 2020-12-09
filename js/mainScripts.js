@@ -38,4 +38,15 @@ function formHeaderClick(formName) {
 
     document.getElementById("form-header-" + formName).classList.add("active");
     document.getElementById("form-" + formName).classList.add("active");
+
+    document.getElementById("alertBox").style.display = "none";
+}
+
+/* FORM Validation FUNCTIONS */
+
+function submitLogin() {
+    let username = document.getElementById("loginUsername").value;
+    let password = document.getElementById("loginPw")
+
+    console.log(username);
 }

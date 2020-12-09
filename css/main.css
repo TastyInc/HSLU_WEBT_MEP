@@ -71,6 +71,7 @@ nav a:hover {
 
 #form-sections {
     margin: 24px 0;
+    height: 450px; 
 }
 
 #form-sections > .form-section {
@@ -79,8 +80,8 @@ nav a:hover {
 
 #form-sections > .active {
     display: inherit !important;
-    height: 450px;
 }
+
 
 #form-sections > .active > .btnSubmit {
     background-color: #5CBF60;
@@ -95,6 +96,15 @@ nav a:hover {
 
 #form-sections > .active > .btnSubmit:hover {
     opacity: 1;
+}
+
+#alertBox > p {
+    color: #712;
+    background-color: #fcc;
+    border: 1px solid #faa;
+    padding: 12px 8px;
+    border-radius: 5px;
+    display: inherit;
 }
 
 
