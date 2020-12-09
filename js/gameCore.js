@@ -1,13 +1,25 @@
 /* FILLER CANVAS */
 const canvas = document.getElementById('game-canvas');
 const c = canvas.getContext('2d');
-let WIDTH = window.innerWidth;
-let HEIGHT = window.innerHeight;
+let WIDTH = document.getElementById('game-canvas').clientWidth;
+let HEIGHT = WIDTH / 16 * 9;
+canvas.width = WIDTH;
+canvas.height = HEIGHT;
 
 // Produces 10 particles every second
-let particles = new Array();
+let entities = new Array();
 
-class Particle {
+c.font = "50px Tahoma Bold";
+c.fillStyle = "gold";
+c.textAlign = "center";
+c.fillText("CLICK TO PLAY", WIDTH/2, HEIGHT/2);
+
+canvas.addEventListener('click', function(event) {
+    console.log(c);
+    animateGameCanvas();
+}, false);
+
+class Entity {
     constructor(velX, velY, posX, posY) {
         this.velX = velX;
         this.velY = velY;
@@ -40,7 +52,7 @@ class Particle {
     }
 }
 
-function createParticle() {
+function createEntity() {
     if(particles.length < 50 && window.scrollY < window.innerHeight) {
         let posX;
         let posY;
@@ -71,27 +83,17 @@ function createParticle() {
     }
 }
 
-/*
-window.onresize = function() {
-    canvas.width = WIDTH = window.innerWidth;
-    canvas.height = HEIGHT = window.innerHeight;
-};
 
-window.onload = function() {
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
-
-    animateFillerCanvas();
-}
-
-//Animation Loop for canvas
-function animateFillerCanvas() {
+//Animation Loop for Game Canvas
+function animateGameCanvas() {
     let now = Date.now();
 
+    c.clearRect(0, 0, WIDTH, HEIGHT);
+
+    /*
     if(window.scrollY < window.innerHeight) {
         let dt = (now - this.then) / 1000;
     
-        c.clearRect(0, 0, WIDTH, HEIGHT);
     
         for (var i = particles.length - 1; i >= 0; i--) {
             particles[i].draw(dt);
@@ -101,9 +103,8 @@ function animateFillerCanvas() {
             }
         }
     }
-
+    */
     this.then = now;
 
-    requestAnimationFrame(animateFillerCanvas);
+    requestAnimationFrame(animateGameCanvas);
 }
-*/

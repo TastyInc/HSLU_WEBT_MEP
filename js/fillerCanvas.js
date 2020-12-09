@@ -81,9 +81,7 @@ window.onresize = function() {
 window.onload = function() {
     fillerCvx.width = fillerWIDTH;
     fillerCvx.height = fillerHEIGHT;
-
-console.log("test");
-
+    
     animateFillerCanvas();
 }
 
