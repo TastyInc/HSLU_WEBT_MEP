@@ -65,7 +65,7 @@ function submitRegister() {
 
     //TODO
     var xhr = new XMLHttpRequest();
-    xhr.open("SET", "server.php", false); //<- Synchron
+    xhr.open("POST", "server.php", false); //<- Synchron
     xhr.onload = function (e) {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
@@ -78,7 +78,7 @@ function submitRegister() {
     xhr.onerror = function (e) {
       console.error(xhr.statusText);
     };
-    xhr.send(password); 
+    xhr.send("username=" + username + "&password" + password); 
 
 
 
