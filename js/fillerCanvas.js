@@ -1,14 +1,14 @@
 /* FILLER CANVAS */
-const canvas = document.getElementById('filler-canvas');
-const c = canvas.getContext('2d');
-let WIDTH = window.innerWidth;
-let HEIGHT = window.innerHeight;
+const fillerCvx = document.getElementById('filler-canvas');
+const cvx = fillerCvx.getContext('2d');
+let fillerWIDTH = window.innerWidth;
+let fillerHEIGHT = window.innerHeight;
 
 // Produces 10 particles every second
 let fillerCanvasInterval = setInterval(createParticle, 100);
-let particles = new Array();
+let fillerParticles = new Array();
 
-class Particle {
+class fillerParticle {
     constructor(velX, velY, posX, posY) {
         this.velX = velX;
         this.velY = velY;
@@ -26,23 +26,23 @@ class Particle {
     }
 
     draw(dt){
-        this.posX += this.velX * WIDTH * dt / 10;
-        this.posY += this.velY * HEIGHT * dt / 10;
+        this.posX += this.velX * fillerWIDTH * dt / 10;
+        this.posY += this.velY * fillerHEIGHT * dt / 10;
 
-        if (this.posX < 0 || this.posY < 0|| this.posX > WIDTH || this.posY > HEIGHT) {
+        if (this.posX < 0 || this.posY < 0|| this.posX > fillerWIDTH || this.posY > fillerHEIGHT) {
             this.delete = true;
         } else {
-            c.beginPath();
-            c.arc(this.posX, this.posY, 10, 0, Math.PI * 2);
-            c.fillStyle = this.color;
-            c.fill();
-            c.closePath();
+            cvx.beginPath();
+            cvx.arc(this.posX, this.posY, 10, 0, Math.PI * 2);
+            cvx.fillStyle = this.color;
+            cvx.fill();
+            cvx.closePath();
         } 
     }
 }
 
 function createParticle() {
-    if(particles.length < 50 && window.scrollY < window.innerHeight) {
+    if(fillerParticles.length < 50 && window.scrollY < window.innerHeight) {
         let posX;
         let posY;
     
@@ -51,36 +51,38 @@ function createParticle() {
         switch(rng) {
             case 0:
                 posX = 0
-                posY = Math.random() * HEIGHT;
+                posY = Math.random() * fillerHEIGHT;
                 break;
             case 1:
-                posX = WIDTH
-                posY = Math.random() * HEIGHT;
+                posX = fillerWIDTH
+                posY = Math.random() * fillerHEIGHT;
                 break;
             case 2:
-                posX = Math.random() * WIDTH;
-                posY = HEIGHT;
+                posX = Math.random() * fillerWIDTH;
+                posY = fillerHEIGHT;
                 break;
             case 3:
-                posX = Math.random() * WIDTH;
+                posX = Math.random() * fillerWIDTH;
                 posY = 0;
                 break;
             default:
         }
     
-        particles.push(new Particle(Math.random() * 2 - 1, Math.random() * 2 - 1, posX, posY));
+        fillerParticles.push(new fillerParticle(Math.random() * 2 - 1, Math.random() * 2 - 1, posX, posY));
     }
 }
 
 
 window.onresize = function() {
-    canvas.width = WIDTH = window.innerWidth;
-    canvas.height = HEIGHT = window.innerHeight;
+    fillerCvx.width = fillerWIDTH = window.innerWidth;
+    fillerCvx.height = fillerHEIGHT = window.innerHeight;
 };
 
 window.onload = function() {
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
+    fillerCvx.width = fillerWIDTH;
+    fillerCvx.height = fillerHEIGHT;
+
+console.log("test");
 
     animateFillerCanvas();
 }
@@ -92,13 +94,20 @@ function animateFillerCanvas() {
     if(window.scrollY < window.innerHeight) {
         let dt = (now - this.then) / 1000;
     
-        c.clearRect(0, 0, WIDTH, HEIGHT);
+        cvx.clearRect(0, 0, fillerWIDTH, fillerHEIGHT);
     
-        for (var i = particles.length - 1; i >= 0; i--) {
-            particles[i].draw(dt);
+        let fontSize = window.innerWidth / 20 + 20;
+
+        cvx.font = fontSize + "px Tahoma Bold";
+        cvx.fillStyle = "white";
+        cvx.textAlign = "center";
+        cvx.fillText("BLASTER", fillerWIDTH/2, fillerHEIGHT/2 + window.scrollY/1.8);
+
+        for (var i = fillerParticles.length - 1; i >= 0; i--) {
+            fillerParticles[i].draw(dt);
     
-            if (particles[i].delete) {
-                particles.splice(i, 1);
+            if (fillerParticles[i].delete) {
+                fillerParticles.splice(i, 1);
             }
         }
     }
