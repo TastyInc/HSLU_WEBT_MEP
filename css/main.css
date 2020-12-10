@@ -99,13 +99,22 @@ nav a:hover {
 }
 
 #alertBox {
-    color: #712;
-    background-color: #fcc;
-    border: 1px solid #faa;
     padding: 0 12px;
     margin: 8px 0;
     border-radius: 5px;
     display: none;
+}
+
+.errorBox {
+    color: #712;
+    background-color: #fcc;
+    border: 1px solid #faa;
+}
+
+.successBox {
+    color: #152;
+    background-color: #ded;
+    border: 1px solid #cec;
 }
 
 

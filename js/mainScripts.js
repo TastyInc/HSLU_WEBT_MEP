@@ -48,45 +48,81 @@ function submitLogin() {
     let username = document.getElementById("loginUsername").value;
     let password = document.getElementById("loginPw").value;
 
+    let formData = new FormData();
+
+    formData.append("type", "login")
+    formData.append("username", username);
+    formData.append("password", password);
+
+
+    //Ajax
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "server.php", true); //<- Asynchron
+    xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200 && xhr.responseText == "success") {
+            showSuccessBox("Erfolgreich als <b>" + username + "</b> eingeloggt")
+        } else {
+            showErrorBox("Something went wrong: " + xhr.responseText);
+        }
+      }
+    };
+    xhr.onerror = function (e) {
+        showErrorBox("Something went wrong: " + xhr.statusText);
+    };
+    xhr.send(formData); 
+
 }
+
 
 function submitRegister() {
     let username = document.getElementById("registerUsername").value;
     let password = document.getElementById("registerPw").value;
     let pwRepeat = document.getElementById("registerPwRepeat").value;
 
+    let error = "";
+    if (password != pwRepeat) {
+        error += "Die Passwörter stimmen nicht überein!";
+
+        showErrorBox(error);
+    } else {
+        let formData = new FormData();
+
+        formData.append("type", "register")
+        formData.append("username", username);
+        formData.append("password", password);
+    
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "server.php", true); //<- Asynchron
+        xhr.onload = function (e) {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200 && xhr.responseText == "success") {
+                showSuccessBox("Erfolgreich registriert und als <b>" + username + "</b> eingeloggt")
+            } else {
+                showErrorBox("Something went wrong: " + xhr.responseText);
+            }
+          }
+        };
+        xhr.onerror = function (e) {
+            showErrorBox("Something went wrong: " + xhr.statusText);
+        };
+        xhr.send(formData); 
+    }
+
+}
+
+function showErrorBox(errorText){
     let alertBox = document.getElementById("alertBox");
 
-    let error = "";
+    alertBox.innerHTML = "<p>" + errorText + "</p>";
+    alertBox.style.display = "block";
+    alertBox.className = "errorBox";
+}
 
-    if (password != pwRepeat) {
-        error += "<p>Die Passwörter stimmen nicht überein!</p>";
-    }
+function showSuccessBox(successText){
+    let alertBox = document.getElementById("alertBox");
 
-    //TODO
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "server.php", false); //<- Synchron
-    xhr.onload = function (e) {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          console.log(xhr.responseText);
-        } else {
-          console.error(xhr.statusText);
-        }
-      }
-    };
-    xhr.onerror = function (e) {
-      console.error(xhr.statusText);
-    };
-    xhr.send("username=" + username + "&password" + password); 
-
-
-
-    if(error.length > 0) {
-        alertBox.innerHTML = error;
-        alertBox.style.display = "block";
-    
-        console.log(alertBox.style.display);
-    }
-
+    alertBox.innerHTML = "<p>" + successText + "</p>";
+    alertBox.style.display = "block";
+    alertBox.className = "successBox";
 }
