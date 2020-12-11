@@ -98,25 +98,28 @@ nav a:hover {
     opacity: 1;
 }
 
-#alertBox {
-    padding: 0 12px;
-    margin: 8px 0;
+.tooltip {
+    position: relative;
+    display: inline-flex;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 240px;
+    background-color: rgba(0,0,0,0.8);
+    color: #fff;
+    text-align: center;
     border-radius: 5px;
-    display: none;
+    padding: 15px 5px;
+    position: absolute;
+    z-index: 99;
+    bottom: 100%;
 }
 
-.errorBox {
-    color: #712;
-    background-color: #fcc;
-    border: 1px solid #faa;
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }
-
-.successBox {
-    color: #152;
-    background-color: #ded;
-    border: 1px solid #cec;
-}
-
 
 /* Game Canvas */
 #game {

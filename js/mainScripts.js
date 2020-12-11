@@ -38,8 +38,6 @@ function formHeaderClick(formName) {
 
     document.getElementById("form-header-" + formName).classList.add("active");
     document.getElementById("form-" + formName).classList.add("active");
-
-    document.getElementById("alertBox").style.display = "none";
 }
 
 /* FORM Validation FUNCTIONS */
@@ -72,6 +70,19 @@ function submitLogin() {
     };
     xhr.send(formData); 
 
+}
+
+function checkPwMatch() {
+    let pw = document.getElementById('registerPw');
+    let pwRepeat = document.getElementById('registerPwRepeat');
+
+    if(pw.value == pwRepeat.value) {
+        pwRepeat.style.background = "#cfc"
+        document.getElementById("registerBtnSubmit").disabled = false;
+    } else {
+        pwRepeat.style.background = "#faa"
+        document.getElementById("registerBtnSubmit").disabled = true;
+    }
 }
 
 
