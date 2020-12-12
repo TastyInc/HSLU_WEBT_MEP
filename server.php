@@ -14,32 +14,31 @@
 	</head>
 	<body>
 		<div id="container" class="w3-container">
-			<section id="intro">
+			<section>
 
                 <?php 
                     if(isset($_POST['login'])) {
+                        echo '<h1>Login</h1>';
                         if(login($_POST['username'], $_POST['password'])){
-                            echo '<p>Sie wurden erfolgreich als ' . $_POST['username'] . ' eigeloggt!</p>';
+                            echo '<p>Sie wurden erfolgreich als <b>' . $_POST['username'] . '</b> eigeloggt!</p>';
                         } else {
-                            echo '<p>Etwas ist schief gegangen...</p>';
+                            echo '<p>Etwas ist mit dem Login schief gegangen. Eventuell falsches Passwort...</p>';
                         }
-                    }
-
-                    if(isset($_POST['register'])) {
+                    }elseif(isset($_POST['register'])) {
+                        echo '<h1>Registrierung</h1>';
                         if(register($_POST['username'], $_POST['password'])){
-                            echo '<p>Sie wurden erfolgreich als ' . $_POST['username'] . ' eigeloggt!</p>';
+                            echo '<p>Sie haben sich erfolgreich als <b>' . $_POST['username'] . '</b> registriert und eigeloggt!</p>';
                         } else {
-                            echo '<p>Etwas ist schief gegangen...</p>';
+                            echo '<p>Etwas ist mit der Registrierung schief gegangen...</p>';
                         }
+                    } else {
+                        echo '<h1>ERROR</h1>';
+                        echo '<p>You have ventured too far! You are not supposed to be here...</p>';
                     }
 
                 ?>
 
-				<h1>TEST</h1>
-                <p>In ac magna tellus. Pellentesque eu cursus nunc, quis blandit nibh. Suspendisse vel risus ornare, rutrum tellus eu, convallis libero. Pellentesque mollis nisi sed nibh fermentum maximus. Duis luctus cursus quam eget aliquam. Mauris sed nibh hendrerit, sodales justo vel, commodo ante. Fusce eget tempus lectus. Duis aliquam velit ut sapien consectetur elementum. Aliquam ac tellus a metus cursus suscipit non vitae neque. Nunc ex augue, commodo sit amet magna eget, bibendum maximus nisi. Donec a egestas elit, vel dignissim lectus.</p>
-
-                
-                <a href="index.html#game"><h1>Zurück zur Startseite</h1></a>
+                <a href="index.html#game"><h2>Zurück zur Startseite</h2></a>
 
 			</section>
 		</div>
@@ -49,24 +48,28 @@
 
 <?php
 
-    if(isset( $_POST['register'])) {
-
-        switch ($_POST['type']) {
-            case "login":
-                login($_POST['username'], $_POST['password']);
-                break;
-            case "register":
-                register($_POST['username'], $_POST['password']);
-                break;
-            default:
-                print_r("error");
-                break;
-        }
-
-    }
-
     function login($username, $password) {
+        $conn = openDbCon();
 
+        $sql = "SELECT ID, Username, Password FROM players WHERE Username=? AND Password=?";
+        $stmt = $conn->prepare($sql);
+
+        $password = md5($password);
+
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        
+        if($result->num_rows == 1) {
+            $user = $result->fetch_assoc();
+
+            createCookie(md5($username . "blstr"));
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function register($username, $password){

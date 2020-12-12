@@ -16,7 +16,6 @@ body {
     max-width: 1140px;
     margin-right: auto;
     margin-left: auto;
-    padding-top: 60px;
 }
 
 
@@ -54,12 +53,20 @@ nav a:hover {
 }
 
 /* Intro */
+#intro {
+    padding-top: 60px;
+}
+
 #intro p {
     text-align: justify;
 }
 
 
 /* FORM */
+#form {
+    padding-top: 50px;
+}
+
 .form-header:hover {
     cursor: pointer;
     border-bottom: 5px solid #e2f2f2;

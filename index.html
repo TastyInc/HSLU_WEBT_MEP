@@ -42,7 +42,7 @@
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra tortor felis, sit amet blandit nisi pellentesque sit amet. Etiam fermentum lacinia ante a ultrices. Donec sit amet quam vel augue porta ultrices. Curabitur sagittis magna quis est accumsan congue. Curabitur dictum, augue quis ornare mattis, enim elit euismod lacus, id convallis est eros eget metus. Morbi ante nibh, scelerisque vitae tortor vitae, posuere consequat ante. Suspendisse lacinia bibendum malesuada. Aliquam erat volutpat. Aliquam bibendum aliquam orci.</p>
 					</div>
 					<div class="w3-half">
-						<p>In ac magna tellus. Pellentesque eu cursus nunc, quis blandit nibh. Suspendisse vel risus ornare, rutrum tellus eu, convallis libero. Pellentesque mollis nisi sed nibh fermentum maximus. Duis luctus cursus quam eget aliquam. Mauris sed nibh hendrerit, sodales justo vel, commodo ante. Fusce eget tempus lectus. Duis aliquam velit ut sapien consectetur elementum. Aliquam ac tellus a metus cursus suscipit non vitae neque. Nunc ex augue, commodo sit amet magna eget, bibendum maximus nisi. Donec a egestas elit, vel dignissim lectus.</p>
+						<p>Das gesamte Projekt lässt sich auch in meinem <b><a href="https://github.com/TastyInc/HSLU_WEBT_MEP" target="_blank">Github Repository</a></b> finden</p>
 					</div>
 				</div>
 
@@ -79,7 +79,7 @@
 								<label for="loginUsername"><b>Username</b></label>
 							</div>
 							<div class="w3-threequarter">
-								<input type="text" placeholder="Benutzername eingeben" name="loginUsername" id="loginUsername" required>
+								<input type="text" placeholder="Benutzername eingeben" name="username" id="loginUsername" required>
 							</div>
 						</div>
 						<div class="w3-row w3-margin-bottom">
@@ -87,7 +87,7 @@
 								<label for="loginPw"><b>Passwort</b></label>
 							</div>
 							<div class="w3-threequarter">
-								<input type="password" placeholder="Passwort eingeben" name="loginPw" id="loginPw" required>
+								<input type="password" placeholder="Passwort eingeben" name="password" id="loginPw" required>
 							</div>
 						</div>
 						<button type="submit" name="login" id="loginBtnSubmit" class="w3-btn w3-ripple w3-green">Login</button>
@@ -125,7 +125,7 @@
 								<input type="password" placeholder="Passwort wiederholen" name="registerPwRepeat" id="registerPwRepeat" onkeyup="checkPwMatch()" required>
 							</div>
 						</div>
-						<button type="submit" name="register" id="registerBtnSubmit" class="w3-btn w3-ripple w3-green">Register</button>
+						<button type="submit" name="register" id="registerBtnSubmit" class="w3-btn w3-ripple w3-green" disabled>Register</button>
 					</form>
 					<div id="form-guest" class="form-section">
 						<p>Spielen Sie als Gast. Die Punkte werden nicht gespeichert :(</p>
