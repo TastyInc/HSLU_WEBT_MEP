@@ -6,54 +6,25 @@ let HEIGHT = WIDTH / 16 * 9;
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
-// Produces 10 particles every second
-let entities = new Array();
+let enemies = new Array();
+let projectiles = new Array();
+let coins = new Array();
+let player = new Player();
 
 c.font = "50px Tahoma Bold";
 c.fillStyle = "gold";
 c.textAlign = "center";
 c.fillText("CLICK TO PLAY", WIDTH/2, HEIGHT/2);
 
+//Starts the Game loooop
 canvas.addEventListener('click', function(event) {
-    console.log(c);
+    player = new Player(WIDTH / 2, HEIGHT / 2);
+
     animateGameCanvas();
 }, false);
 
-class Entity {
-    constructor(velX, velY, posX, posY) {
-        this.velX = velX;
-        this.velY = velY;
-        this.posX = posX;
-        this.posY = posY;
-        this.delete = false;
-        this.color = this.setColor();
-    }
-
-    setColor(){
-        let r = Math.random() * 200 + 55;
-        let g = Math.random() * 200 + 55;
-        let b = Math.random() * 200 + 55;
-        return "rgb(" + String(r) + ", " + String(g) + ", " + String(b) + ")";
-    }
-
-    draw(dt){
-        this.posX += this.velX * WIDTH * dt / 10;
-        this.posY += this.velY * HEIGHT * dt / 10;
-
-        if (this.posX < 0 || this.posY < 0|| this.posX > WIDTH || this.posY > HEIGHT) {
-            this.delete = true;
-        } else {
-            c.beginPath();
-            c.arc(this.posX, this.posY, 10, 0, Math.PI * 2);
-            c.fillStyle = this.color;
-            c.fill();
-            c.closePath();
-        } 
-    }
-}
-
 function createEntity() {
-    if(particles.length < 50 && window.scrollY < window.innerHeight) {
+    if(entities.length < 50 && window.scrollY < window.innerHeight) {
         let posX;
         let posY;
     
@@ -79,10 +50,9 @@ function createEntity() {
             default:
         }
     
-        particles.push(new Particle(Math.random() * 2 - 1, Math.random() * 2 - 1, posX, posY));
+        entities.push(new Entity(Math.random() * 2 - 1, Math.random() * 2 - 1, posX, posY));
     }
 }
-
 
 //Animation Loop for Game Canvas
 function animateGameCanvas() {
@@ -108,3 +78,103 @@ function animateGameCanvas() {
 
     requestAnimationFrame(animateGameCanvas);
 }
+
+
+
+
+
+
+
+
+
+// Input Events für Spieler Movement und Schiessen
+addEventListener("keydown", (event) => {
+
+    switch (event.code) {
+        case 65: // <-
+            player.keyLeft = true;
+            break;
+        case 87: // /\
+            player.keyUp = true;
+            break;
+        case 68: // ->
+            player.keyRight = true;
+            break;
+        case 83: // \/
+            player.keyDown = true;
+            break;
+        case 37:
+            player.setShootDirection("left");
+            break;
+        case 38:
+            player.setShootDirection("up");
+            break;
+        case 39:
+            player.setShootDirection("right");
+            break;
+        case 40:
+            player.setShootDirection("down");
+            break;
+        case 76: // L: Debug
+            DEBUG = !DEBUG;
+            break;
+        case 82: // R: RESET
+            core.setupLevel(menu.selectedLevelNr);
+            break;
+        case 77: // M: Menu
+            core.setupMenu();
+            break;
+        case 27: // ESC
+            musicPlayer.stop();
+            core.setupMenu();
+            break;
+        default:
+            break;
+    }
+
+    player.moveDirection();
+    
+})
+
+//keyUp
+addEventListener("keyup", (event) => {
+
+    switch (event.code) {
+        case 65: // <-
+            player.keyLeft = false;
+            break;
+        case 87: // /\
+            player.keyUp = false;
+            break;
+        case 68: // ->
+            player.keyRight = false;
+            break;
+        case 83: // \/
+            player.keyDown = false;
+            break;
+        case 37:
+            if (player.shootDirection == "left") {
+                player.setShootDirection(null);
+            }
+            break;
+        case 38:
+            if (player.shootDirection == "up") {
+                player.setShootDirection(null);
+            }
+            break;
+        case 39:
+            if (player.shootDirection == "right") {
+                player.setShootDirection(null);
+            }
+            break;
+        case 40:
+            if (player.shootDirection == "down") {
+                player.setShootDirection(null);
+            }
+            break;
+        default:
+            break;
+    }
+
+    player.moveDirection();
+})
