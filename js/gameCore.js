@@ -12,6 +12,7 @@ let coins = new Array();
 let player = new Player();
 
 let then = Date.now();
+let totalTime = 0;
 let gameStarted = false;
 
 c.font = "50px Tahoma Bold";
@@ -31,35 +32,47 @@ canvas.addEventListener('click', function(event) {
     }
 }, false);
 
-function createEntity() {
-    if(entities.length < 50 && window.scrollY < window.innerHeight) {
-        let posX;
-        let posY;
-    
-        let rng = Math.floor(Math.random() * 4);
-    
-        switch(rng) {
-            case 0:
-                posX = 0
-                posY = Math.random() * HEIGHT;
-                break;
-            case 1:
-                posX = WIDTH
-                posY = Math.random() * HEIGHT;
-                break;
-            case 2:
-                posX = Math.random() * WIDTH;
-                posY = HEIGHT;
-                break;
-            case 3:
-                posX = Math.random() * WIDTH;
-                posY = 0;
-                break;
-            default:
-        }
-    
-        entities.push(new Entity(Math.random() * 2 - 1, Math.random() * 2 - 1, posX, posY));
+function createEntity(type) {
+    let posX;
+    let posY;
+
+    let rng = Math.floor(Math.random() * 4);
+
+    switch(rng) {
+        case 0:
+            posX = 0
+            posY = Math.random() * HEIGHT;
+            break;
+        case 1:
+            posX = WIDTH
+            posY = Math.random() * HEIGHT;
+            break;
+        case 2:
+            posX = Math.random() * WIDTH;
+            posY = HEIGHT;
+            break;
+        case 3:
+            posX = Math.random() * WIDTH;
+            posY = 0;
+            break;
+        default:
     }
+
+    let angle = Math.atan2(player.y - posY, player.x - posX);
+
+    let velX = Math.cos(angle);
+    let velY = Math.sin(angle);
+
+    switch(type) {
+        case "enemy":
+            enemies.push(new Enemy(posX, posY, velX, velY));
+            break;
+        case "coin":
+            coins.push(new Coin(posX, posY, velX, velY));
+            break;
+        default:
+    }
+    
 }
 
 //Animation Loop for Game Canvas
@@ -70,21 +83,55 @@ function animateGameCanvas() {
 
     //Delta Time ausrechnen und jede Velocity der Entitäten damit berechnen 
     let dt = (now - then);
+    totalTime += dt;
+
+
+    if(enemies.length <= Math.round(totalTime / 1000)) {
+        createEntity("enemy");
+
+        //10% Chance
+        if(Math.random() * 100 < 10) {
+            createEntity("coin");
+        }
+    }
+
+
+    if(coins.length == 0) {
+        if(Math.random() * 100 == 100) {
+            console.log("TET");
+        }
+    }
+
 
     player.update(dt);
     player.draw();
     
     for (var i = projectiles.length - 1; i >= 0; i--) {
         projectiles[i].update(dt);
+        projectiles[i].draw();
 
         if (projectiles[i].delete) {
             projectiles.splice(i, 1);
         }
     }
 
-    projectiles.forEach(proj => {
-        proj.draw();
-    })
+    for (var i = enemies.length - 1; i >= 0; i--) {
+        enemies[i].update(dt);
+        enemies[i].draw();
+
+        if (enemies[i].delete) {
+            enemies.splice(i, 1);
+        }
+    }
+
+    for (var i = coins.length - 1; i >= 0; i--) {
+        coins[i].update(dt);
+        coins[i].draw();
+
+        if (coins[i].delete) {
+            coins.splice(i, 1);
+        }
+    }
 
     /*
     if(window.scrollY < window.innerHeight) {

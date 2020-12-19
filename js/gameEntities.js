@@ -1,26 +1,31 @@
 class Enemy {
-    constructor(velX, velY, posX, posY, color) {
+    constructor(x, y, velX, velY) {
+        this.x = x;
+        this.y = y;
         this.velX = velX;
         this.velY = velY;
-        this.posX = posX;
-        this.posY = posY;
         this.delete = false;
-        this.color = 'rgb(255,0,0)';
+        this.radius = Math.random() * 10 + 5;
+        this.color = 'rgb(230,50,20)';
     }
 
-    draw(dt){
-        this.posX += this.velX * dt / 100;
-        this.posY += this.velY * dt / 100;
+    update(dt){
+        this.x += this.velX * dt / 10;
+        this.y += this.velY * dt / 10;
 
-        if (this.posX < -this.radius || this.posY < -this.radius || this.posX > WIDTH + this.radius || this.posY > HEIGHT + this.radius) {
+        if (this.x < -this.radius || this.y < -this.radius || this.x > WIDTH + this.radius || this.y > HEIGHT + this.radius) {
             this.delete = true;
-        } else {
-            c.beginPath();
-            c.arc(this.posX, this.posY, 10, 0, Math.PI * 2);
-            c.fillStyle = this.color;
-            c.fill();
-            c.closePath();
         } 
+    }
+
+    draw(){
+        
+        c.beginPath();
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        c.fillStyle = this.color;
+        c.fill();
+        c.closePath();
+        
     }
 }
 
@@ -39,10 +44,9 @@ class Projectile {
         this.x += this.velX * dt;
         this.y += this.velY * dt;
 
-        if (this.x < -this.radius || this.posY < -this.radius || this.x > WIDTH + this.radius || this.y > HEIGHT + this.radius) {
+        if (this.x < -this.radius || this.y < -this.radius || this.x > WIDTH + this.radius || this.y > HEIGHT + this.radius) {
             this.delete = true;
         }
-
     }
 
     draw(){
@@ -56,28 +60,31 @@ class Projectile {
 }
 
 class Coin {
-    constructor(velX, velY, posX, posY, color) {
+    constructor(x, y, velX, velY) {
+        this.x = x;
+        this.y = y;
         this.velX = velX;
         this.velY = velY;
-        this.posX = posX;
-        this.posY = posY;
         this.delete = false;
-        this.color = 'rgb(255,215,0)';
+        this.color = 'rgb(50,255,100)';
     }
 
-    draw(dt){
-        this.posX += this.velX * dt / 100;
-        this.posY += this.velY * dt / 100;
+    update(dt){
+        this.x += this.velX * dt / 15;
+        this.y += this.velY * dt / 15;
 
-        if (this.posX < -this.radius || this.posY < -this.radius || this.posX > WIDTH + this.radius || this.posY > HEIGHT + this.radius) {
+        if (this.x < -this.radius || this.y < -this.radius || this.x > WIDTH + this.radius || this.y > HEIGHT + this.radius) {
             this.delete = true;
-        } else {
-            c.beginPath();
-            c.arc(this.posX, this.posY, 10, 0, Math.PI * 2);
-            c.fillStyle = this.color;
-            c.fill();
-            c.closePath();
-        } 
+        }
+    }
+
+
+    draw(){
+        c.beginPath();
+        c.arc(this.x, this.y, 10, 0, Math.PI * 2);
+        c.fillStyle = this.color;
+        c.fill();
+        c.closePath();
     }
 }
 
@@ -90,7 +97,7 @@ class Player {
     keyUp = false;
     keyDown = false;
 
-    shootChargeTime = 250;
+    shootChargeTime = 200;
     shootCooldown = 0;
 
     speed = 1;
@@ -100,7 +107,7 @@ class Player {
         this.y = y;
         this.delete = false;
         this.radius = 10;
-        this.color = 'rgb(0,255,0)';
+        this.color = 'rgb(96, 80, 255)';
     }
 
     update(dt){
