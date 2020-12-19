@@ -5,14 +5,14 @@ class Enemy {
         this.posX = posX;
         this.posY = posY;
         this.delete = false;
-        this.color = this.setColor();
+        this.color = 'rgb(255,0,0)';
     }
 
     draw(dt){
         this.posX += this.velX * dt / 100;
         this.posY += this.velY * dt / 100;
 
-        if (this.posX < 0 || this.posY < 0|| this.posX > WIDTH || this.posY > HEIGHT) {
+        if (this.posX < -this.radius || this.posY < -this.radius || this.posX > WIDTH + this.radius || this.posY > HEIGHT + this.radius) {
             this.delete = true;
         } else {
             c.beginPath();
@@ -24,6 +24,37 @@ class Enemy {
     }
 }
 
+class Projectile {
+    constructor(x, y, velX, velY) {
+        this.x = x;
+        this.y = y;        
+        this.velX = velX;
+        this.velY = velY;
+        this.delete = false;
+        this.radius = 3;
+        this.color = 'rgb(255,255,255)';
+    }
+
+    update(dt){
+        this.x += this.velX * dt;
+        this.y += this.velY * dt;
+
+        if (this.x < -this.radius || this.posY < -this.radius || this.x > WIDTH + this.radius || this.y > HEIGHT + this.radius) {
+            this.delete = true;
+        }
+
+    }
+
+    draw(){
+        c.beginPath();
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        c.fillStyle = this.color;
+        c.fill();
+        c.closePath();
+
+    }
+}
+
 class Coin {
     constructor(velX, velY, posX, posY, color) {
         this.velX = velX;
@@ -31,14 +62,14 @@ class Coin {
         this.posX = posX;
         this.posY = posY;
         this.delete = false;
-        this.color = this.setColor();
+        this.color = 'rgb(255,215,0)';
     }
 
     draw(dt){
         this.posX += this.velX * dt / 100;
         this.posY += this.velY * dt / 100;
 
-        if (this.posX < 0 || this.posY < 0|| this.posX > WIDTH || this.posY > HEIGHT) {
+        if (this.posX < -this.radius || this.posY < -this.radius || this.posX > WIDTH + this.radius || this.posY > HEIGHT + this.radius) {
             this.delete = true;
         } else {
             c.beginPath();
@@ -59,9 +90,10 @@ class Player {
     keyUp = false;
     keyDown = false;
 
-    shootDirection;
-    shootChargeTime = 0.2;
+    shootChargeTime = 250;
     shootCooldown = 0;
+
+    speed = 1;
 
     constructor(x, y) {
         this.x = x;
@@ -72,9 +104,11 @@ class Player {
     }
 
     update(dt){
-        if (this.shootDirection != null) {
-            this.shoot(dt);
-        }
+
+        this.x += this.velX * dt / 4;
+        this.y += this.velY * dt / 4;
+
+        this.shootCooldown += dt;
 
         this.collide();
     }
@@ -147,49 +181,19 @@ class Player {
         }
     }
 
-    setShootDirection(direction) {
-        this.shootDirection = direction;
-    }
-
-    shoot(dt) {
-
-        this.shootCooldown += dt;
-
+    shoot(endX, endY) {
         if (this.shootCooldown >= this.shootChargeTime) {
+
+
             this.shootCooldown = 0;
+            
+            let angle = Math.atan2(endY - this.y, endX - this.x);
 
-            let dirX = 0;
-            let dirY = 0;
+            let velX = Math.cos(angle);
+            let velY = Math.sin(angle);
 
-            switch (this.shootDirection) {
-                case "up":
-                    dirY -= 10;
-                    break;
-                case "down":
-                    dirY = 10;
-                    break;
-                case "left":
-                    dirX -= 10;
-                    break;
-                case "right":
-                    dirX = 10;
-                    break;
-                default:
-                    break;
-            }
+            projectiles.push(new Projectile(this.x, this.y, velX, velY));
 
-            createProjectile(this.x, this.y, dirX, dirY);
-
-            /*
-            let proj = new linProjectile(0);
-
-            Util.applyTemplate(proj, prPlayer);
-            proj.color = lvl.playerProjCol;
-            proj.x = player.x;
-            proj.y = player.y;
-            proj.setAngleAndVelocity(player.x, player.y, player.x + dirX, player.y + dirY);
-            proj.setup(proj);
-            */
         }
     }
 }

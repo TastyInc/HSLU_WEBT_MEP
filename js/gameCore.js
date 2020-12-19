@@ -11,16 +11,24 @@ let projectiles = new Array();
 let coins = new Array();
 let player = new Player();
 
+let then = Date.now();
+let gameStarted = false;
+
 c.font = "50px Tahoma Bold";
 c.fillStyle = "gold";
 c.textAlign = "center";
 c.fillText("CLICK TO PLAY", WIDTH/2, HEIGHT/2);
 
-//Starts the Game loooop
+//Startet das Spiel oder schiest Projektil falls gestartet
 canvas.addEventListener('click', function(event) {
-    player = new Player(WIDTH / 2, HEIGHT / 2);
+    if(gameStarted) {
 
-    animateGameCanvas();
+        player.shoot(event.clientX - canvas.offsetLeft, event.offsetY);
+    } else {
+        gameStarted = true
+        player = new Player(WIDTH / 2, HEIGHT / 2);
+        animateGameCanvas();
+    }
 }, false);
 
 function createEntity() {
@@ -60,6 +68,24 @@ function animateGameCanvas() {
 
     c.clearRect(0, 0, WIDTH, HEIGHT);
 
+    //Delta Time ausrechnen und jede Velocity der Entitäten damit berechnen 
+    let dt = (now - then);
+
+    player.update(dt);
+    player.draw();
+    
+    for (var i = projectiles.length - 1; i >= 0; i--) {
+        projectiles[i].update(dt);
+
+        if (projectiles[i].delete) {
+            projectiles.splice(i, 1);
+        }
+    }
+
+    projectiles.forEach(proj => {
+        proj.draw();
+    })
+
     /*
     if(window.scrollY < window.innerHeight) {
         let dt = (now - this.then) / 1000;
@@ -74,7 +100,7 @@ function animateGameCanvas() {
         }
     }
     */
-    this.then = now;
+    then = now;
 
     requestAnimationFrame(animateGameCanvas);
 }
@@ -91,42 +117,40 @@ function animateGameCanvas() {
 addEventListener("keydown", (event) => {
 
     switch (event.code) {
-        case 65: // <-
+        case 'KeyA': // <-
             player.keyLeft = true;
             break;
-        case 87: // /\
+        case 'KeyW': // /\
             player.keyUp = true;
             break;
-        case 68: // ->
+        case 'KeyD': // ->
             player.keyRight = true;
             break;
-        case 83: // \/
+        case 'KeyS': // \/
             player.keyDown = true;
             break;
-        case 37:
+        case 'ArrowLeft':
             player.setShootDirection("left");
             break;
-        case 38:
+        case 'ArrowUp':
+            event.preventDefault();
             player.setShootDirection("up");
             break;
-        case 39:
+        case 'ArrowRight':
             player.setShootDirection("right");
             break;
-        case 40:
+        case 'ArrowDown':
+            event.preventDefault();
             player.setShootDirection("down");
             break;
-        case 76: // L: Debug
+        case 'KeyL': // L: Debug
             DEBUG = !DEBUG;
             break;
-        case 82: // R: RESET
+        case 'KeyR': // R: RESET
             core.setupLevel(menu.selectedLevelNr);
             break;
-        case 77: // M: Menu
-            core.setupMenu();
-            break;
-        case 27: // ESC
-            musicPlayer.stop();
-            core.setupMenu();
+        case 'Space':
+            event.preventDefault();
             break;
         default:
             break;
@@ -140,34 +164,34 @@ addEventListener("keydown", (event) => {
 addEventListener("keyup", (event) => {
 
     switch (event.code) {
-        case 65: // <-
+        case 'KeyA': // <-
             player.keyLeft = false;
             break;
-        case 87: // /\
+        case 'KeyW': // /\
             player.keyUp = false;
             break;
-        case 68: // ->
+        case 'KeyD': // ->
             player.keyRight = false;
             break;
-        case 83: // \/
+        case 'KeyS': // \/
             player.keyDown = false;
             break;
-        case 37:
+        case 'ArrowLeft':
             if (player.shootDirection == "left") {
                 player.setShootDirection(null);
             }
             break;
-        case 38:
+        case 'ArrowUP':
             if (player.shootDirection == "up") {
                 player.setShootDirection(null);
             }
             break;
-        case 39:
+        case 'ArrowRight':
             if (player.shootDirection == "right") {
                 player.setShootDirection(null);
             }
             break;
-        case 40:
+        case 'ArrowDown':
             if (player.shootDirection == "down") {
                 player.setShootDirection(null);
             }

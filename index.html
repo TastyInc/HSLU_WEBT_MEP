@@ -97,8 +97,11 @@
 						<hr>
 						<div class="w3-row w3-margin-bottom">
 							<div class="w3-quarter">
-								<label class="tooltip" for="registerUsername">
+								<label for="registerUsername">
 									<b>Benutzername</b>
+								</label>
+								<label class="tooltip">
+									<b>i</b>
 									<span class="tooltiptext">Der Benutzername darf nur aus Buchstaben und Zahlen bestehen und max. 20 Zeichen lang sein</span>
 								</label>
 							</div>
@@ -108,13 +111,16 @@
 						</div>
 						<div class="w3-row w3-margin-bottom">
 							<div class="w3-quarter">
-								<label class="tooltip" for="registerPw">
+								<label for="registerPw">
 									<b>Passwort</b>
+								</label>
+								<label class="tooltip">
+									<b>i</b>
 									<span class="tooltiptext">Das Passwort muss 4-20 Zeichen lang sein und muss min. 1 Zahl, Gross- & Kleinbuchstaben beinhalten</span>
 								</label>
 							</div>
 							<div class="w3-threequarter">
-								<input type="password" placeholder="Passwort eingeben" name="password" id="registerPw" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{4,20}$" required />
+								<input type="password" placeholder="Passwort eingeben" name="password" id="registerPw" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{4,20}$" onkeyup="checkPwMatch()" required />
 							</div>
 						</div>
 						<div class="w3-row w3-margin-bottom">
