@@ -66,12 +66,16 @@ class Coin {
         this.velX = velX;
         this.velY = velY;
         this.delete = false;
+        this.radius = 20;
         this.color = 'rgb(50,255,100)';
+        this.rotation = 0;
+        this.rotMult = Math.random() * 2 - 1;
     }
 
     update(dt){
         this.x += this.velX * dt / 15;
         this.y += this.velY * dt / 15;
+        this.rotation += dt / 10 * this.rotMult;
 
         if (this.x < -this.radius || this.y < -this.radius || this.x > WIDTH + this.radius || this.y > HEIGHT + this.radius) {
             this.delete = true;
@@ -80,11 +84,13 @@ class Coin {
 
 
     draw(){
-        c.beginPath();
-        c.arc(this.x, this.y, 10, 0, Math.PI * 2);
-        c.fillStyle = this.color;
-        c.fill();
-        c.closePath();
+        c.save();
+        c.translate(this.x + this.radius / 2, this.y + this.radius / 2)
+        c.rotate(this.rotation * Math.PI / 180);
+        c.translate(-this.x - this.radius / 2, -this.y - this.radius / 2)
+        c.fillStyle = this.color
+        c.fillRect(this.x, this.y, this.radius, this.radius);
+        c.restore();
     }
 }
 

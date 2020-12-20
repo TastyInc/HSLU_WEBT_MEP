@@ -11,9 +11,10 @@ let projectiles = new Array();
 let coins = new Array();
 let player = new Player();
 
-let then = Date.now();
+let then = 0;
 let totalTime = 0;
 let gameStarted = false;
+let score = 0;
 
 c.font = "50px Tahoma Bold";
 c.fillStyle = "gold";
@@ -27,6 +28,7 @@ canvas.addEventListener('click', function(event) {
         player.shoot(event.clientX - canvas.offsetLeft, event.offsetY);
     } else {
         gameStarted = true
+        then = Date.now()
         player = new Player(WIDTH / 2, HEIGHT / 2);
         animateGameCanvas();
     }
@@ -84,7 +86,7 @@ function animateGameCanvas() {
     //Delta Time ausrechnen und jede Velocity der Entitäten damit berechnen 
     let dt = (now - then);
     totalTime += dt;
-
+    score += Math.round(dt / 10);
 
     if(enemies.length <= Math.round(totalTime / 1000)) {
         createEntity("enemy");
@@ -94,14 +96,6 @@ function animateGameCanvas() {
             createEntity("coin");
         }
     }
-
-
-    if(coins.length == 0) {
-        if(Math.random() * 100 == 100) {
-            console.log("TET");
-        }
-    }
-
 
     player.update(dt);
     player.draw();
@@ -119,6 +113,19 @@ function animateGameCanvas() {
         enemies[i].update(dt);
         enemies[i].draw();
 
+        //kollision von gegner und spieler
+        if(collisionDetection(enemies[i], player)){
+            //Game over
+        }
+
+        projectiles.forEach(proj => {
+            if(collisionDetection(enemies[i], proj)){
+                proj.delete = true;
+                enemies[i].delete = true;
+                score += 80;
+            }
+        })
+
         if (enemies[i].delete) {
             enemies.splice(i, 1);
         }
@@ -128,36 +135,41 @@ function animateGameCanvas() {
         coins[i].update(dt);
         coins[i].draw();
 
+        //kollision von coins und spieler
+        if(collisionDetection(coins[i], player)){
+            coins[i].delete = true;
+            score += 450;
+        }
+
         if (coins[i].delete) {
             coins.splice(i, 1);
         }
     }
 
-    /*
-    if(window.scrollY < window.innerHeight) {
-        let dt = (now - this.then) / 1000;
-    
-    
-        for (var i = particles.length - 1; i >= 0; i--) {
-            particles[i].draw(dt);
-    
-            if (particles[i].delete) {
-                particles.splice(i, 1);
-            }
-        }
-    }
-    */
+    c.font = "20px Courier";
+    c.fillStyle = "gold";
+    c.textAlign = "right";
+    c.fillText(score, 120, 40);
+
     then = now;
 
     requestAnimationFrame(animateGameCanvas);
 }
 
 
+function collisionDetection(obj1, obj2) {
 
-
-
-
-
+    if (obj1.x - obj2.x < obj1.radius + obj2.radius) {
+        if (obj1.y - obj2.y < obj1.radius + obj2.radius) {
+            let absqrt = (obj2.x - obj1.x) * (obj2.x - obj1.x) + (obj2.y - obj1.y) * (obj2.y - obj1.y);
+            let radsqrt = (obj1.radius + obj2.radius) * (obj1.radius + obj2.radius);
+            if (absqrt < radsqrt) {
+                return true; //is colliding
+            }
+        }
+    }
+    return false;
+}
 
 
 // Input Events für Spieler Movement und Schiessen
@@ -175,20 +187,6 @@ addEventListener("keydown", (event) => {
             break;
         case 'KeyS': // \/
             player.keyDown = true;
-            break;
-        case 'ArrowLeft':
-            player.setShootDirection("left");
-            break;
-        case 'ArrowUp':
-            event.preventDefault();
-            player.setShootDirection("up");
-            break;
-        case 'ArrowRight':
-            player.setShootDirection("right");
-            break;
-        case 'ArrowDown':
-            event.preventDefault();
-            player.setShootDirection("down");
             break;
         case 'KeyL': // L: Debug
             DEBUG = !DEBUG;
@@ -222,26 +220,6 @@ addEventListener("keyup", (event) => {
             break;
         case 'KeyS': // \/
             player.keyDown = false;
-            break;
-        case 'ArrowLeft':
-            if (player.shootDirection == "left") {
-                player.setShootDirection(null);
-            }
-            break;
-        case 'ArrowUP':
-            if (player.shootDirection == "up") {
-                player.setShootDirection(null);
-            }
-            break;
-        case 'ArrowRight':
-            if (player.shootDirection == "right") {
-                player.setShootDirection(null);
-            }
-            break;
-        case 'ArrowDown':
-            if (player.shootDirection == "down") {
-                player.setShootDirection(null);
-            }
             break;
         default:
             break;
