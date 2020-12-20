@@ -1,8 +1,8 @@
-/* FILLER CANVAS */
+/* GAME CANVAS */
 const canvas = document.getElementById('game-canvas');
 const c = canvas.getContext('2d');
 let WIDTH = document.getElementById('game-canvas').clientWidth;
-let HEIGHT = WIDTH / 16 * 9;
+let HEIGHT = WIDTH / 16 * 9; // 16:9 Aspect Ratiooo
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
@@ -11,28 +11,38 @@ let projectiles = new Array();
 let coins = new Array();
 let player = new Player();
 
-let then = 0;
-let totalTime = 0;
+let then;
+let totalTime;
 let gameStarted = false;
-let score = 0;
+let gameOver = false;
+let score;
 
 c.font = "50px Tahoma Bold";
 c.fillStyle = "gold";
 c.textAlign = "center";
-c.fillText("CLICK TO PLAY", WIDTH/2, HEIGHT/2);
+c.fillText("Press [SPACE] to play", WIDTH/2, HEIGHT/2);
 
-//Startet das Spiel oder schiest Projektil falls gestartet
+//Schiest Projektil falls gestartet
 canvas.addEventListener('click', function(event) {
     if(gameStarted) {
-
         player.shoot(event.clientX - canvas.offsetLeft, event.offsetY);
-    } else {
+    } 
+}, false);
+
+function startGame() {
+    if(!gameStarted) {
         gameStarted = true
         then = Date.now()
+        enemies = [];
+        projectiles = [];
+        coins = [];
+        totalTime = 0;
+        score = 0;
         player = new Player(WIDTH / 2, HEIGHT / 2);
+    
         animateGameCanvas();
     }
-}, false);
+}
 
 function createEntity(type) {
     let posX;
@@ -100,6 +110,7 @@ function animateGameCanvas() {
     player.update(dt);
     player.draw();
     
+    //umgekehrter For Loop damit splice richtig funktioniert...
     for (var i = projectiles.length - 1; i >= 0; i--) {
         projectiles[i].update(dt);
         projectiles[i].draw();
@@ -113,11 +124,12 @@ function animateGameCanvas() {
         enemies[i].update(dt);
         enemies[i].draw();
 
-        //kollision von gegner und spieler
+        //collision gegner und spieler
         if(collisionDetection(enemies[i], player)){
-            //Game over
+            gameOver = true;
         }
 
+        //collision gegner & Projektile
         projectiles.forEach(proj => {
             if(collisionDetection(enemies[i], proj)){
                 proj.delete = true;
@@ -133,9 +145,9 @@ function animateGameCanvas() {
 
     for (var i = coins.length - 1; i >= 0; i--) {
         coins[i].update(dt);
-        coins[i].draw();
+        coins[i].draw(player.coins);
 
-        //kollision von coins und spieler
+        //collision von coins und spieler
         if(collisionDetection(coins[i], player)){
             coins[i].delete = true;
             score += 450;
@@ -147,32 +159,43 @@ function animateGameCanvas() {
     }
 
     c.font = "20px Courier";
-    c.fillStyle = "gold";
+    c.fillStyle = "rgb(255,255,255)";
     c.textAlign = "right";
     c.fillText(score, 120, 40);
 
     then = now;
 
-    requestAnimationFrame(animateGameCanvas);
+    if(!gameOver){
+        requestAnimationFrame(animateGameCanvas);
+    } else {
+        c.font = "50px Tahoma Bold";
+        c.fillStyle = "gold";
+        c.textAlign = "center";
+        c.fillText("Final Score: " + score, WIDTH/2, HEIGHT/2);
+        c.fillText("Press [SPACE] to restart", WIDTH/2, HEIGHT/2 + 55);
+
+        gameStarted = false;
+        gameOver = false;
+    }
 }
 
 
 function collisionDetection(obj1, obj2) {
-
     if (obj1.x - obj2.x < obj1.radius + obj2.radius) {
         if (obj1.y - obj2.y < obj1.radius + obj2.radius) {
-            let absqrt = (obj2.x - obj1.x) * (obj2.x - obj1.x) + (obj2.y - obj1.y) * (obj2.y - obj1.y);
-            let radsqrt = (obj1.radius + obj2.radius) * (obj1.radius + obj2.radius);
+            let absqrt = (obj2.x - obj1.x) * (obj2.x - obj1.x) + (obj2.y - obj1.y) * (obj2.y - obj1.y); //Distanz zwischen Objekten
+            let radsqrt = (obj1.radius + obj2.radius) * (obj1.radius + obj2.radius); //Radius der Objekte
             if (absqrt < radsqrt) {
                 return true; //is colliding
             }
         }
     }
+
     return false;
 }
 
 
-// Input Events für Spieler Movement und Schiessen
+// Input Events für Spieler Movement und Start
 addEventListener("keydown", (event) => {
 
     switch (event.code) {
@@ -188,12 +211,6 @@ addEventListener("keydown", (event) => {
         case 'KeyS': // \/
             player.keyDown = true;
             break;
-        case 'KeyL': // L: Debug
-            DEBUG = !DEBUG;
-            break;
-        case 'KeyR': // R: RESET
-            core.setupLevel(menu.selectedLevelNr);
-            break;
         case 'Space':
             event.preventDefault();
             break;
@@ -205,7 +222,6 @@ addEventListener("keydown", (event) => {
     
 })
 
-//keyUp
 addEventListener("keyup", (event) => {
 
     switch (event.code) {
@@ -220,6 +236,9 @@ addEventListener("keyup", (event) => {
             break;
         case 'KeyS': // \/
             player.keyDown = false;
+            break;
+        case 'Space': 
+            startGame();
             break;
         default:
             break;

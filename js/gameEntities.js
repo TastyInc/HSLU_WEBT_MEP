@@ -13,13 +13,13 @@ class Enemy {
         this.x += this.velX * dt / 10;
         this.y += this.velY * dt / 10;
 
+        //Falls ausserhalb des Canvas -> Objekt löschen
         if (this.x < -this.radius || this.y < -this.radius || this.x > WIDTH + this.radius || this.y > HEIGHT + this.radius) {
             this.delete = true;
         } 
     }
 
     draw(){
-        
         c.beginPath();
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         c.fillStyle = this.color;
@@ -117,7 +117,6 @@ class Player {
     }
 
     update(dt){
-
         this.x += this.velX * dt / 4;
         this.y += this.velY * dt / 4;
 
