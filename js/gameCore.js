@@ -176,6 +176,7 @@ function animateGameCanvas() {
 
         gameStarted = false;
         gameOver = false;
+        submitScore(score);
     }
 }
 
@@ -192,6 +193,34 @@ function collisionDetection(obj1, obj2) {
     }
 
     return false;
+}
+
+
+function submitScore(score) {
+    let formData = new FormData();
+
+    formData.append("score", score)
+
+    //Ajax
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "server.php", true); //<- Asynchron
+    xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            document.getElementById("highscores").innerHTML = xhr.responseText;
+        } else {
+            console.log(xhr.responseText + "KEKE");
+            showErrorBox("Something went wrong: " + xhr.responseText);
+        }
+      }
+    };
+    xhr.onerror = function (e) {
+        console.log(xhr.responseText + " ERRRRER");
+        showErrorBox("Something went wrong: " + xhr.statusText);
+    };
+    xhr.send(formData); 
+
 }
 
 
