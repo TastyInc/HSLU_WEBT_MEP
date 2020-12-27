@@ -1,5 +1,9 @@
 <?php if(isset($_POST['score'])) : ?>
-    <div>KEK</div>
+    <table>
+        <?php 
+            updateScoreForPlayer($_POST['score']); 
+        ?>
+    </table>
 <?php else : ?>
     <!doctype html>
     <html lang="en">
@@ -44,6 +48,7 @@
         </body>
     </html>
 <?php endif; 
+
     function login($username, $password) {
         $conn = openDbCon();
 
@@ -81,34 +86,72 @@
 
         createCookie(md5($username . "blstr"));
 
-        getPlayers();
-
         $stmt->close();
 
         return true;
     }
 
-    function getPlayers(){
+    function updateScoreForPlayer($score) {
+        if(getCookie() != null && $score > 0) {
+            $conn = openDbCon();
+
+            $sql = "SELECT ID, Username, Highscore FROM players";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    if(md5($row["Username"] . "blstr") == getCookie()) {
+                        if($score > $row["Highscore"]) {
+                            $stmt = $conn->prepare("UPDATE players SET Highscore=? WHERE ID=?");
+                    
+                            $stmt->bind_param("ii", $score, $row["ID"]);
+                            $stmt->execute();
+
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        getPlayerHighscoreList();
+        
+    }
+
+    function getPlayerHighscoreList(){
         $conn = openDbCon();
 
-        $sql = "SELECT ID, Username, Password, Highscore FROM players";
+        $sql = "SELECT Username, Highscore FROM players ORDER BY Highscore DESC";
         $result = $conn->query($sql);
         
         if ($result->num_rows > 0) {
           while($row = $result->fetch_assoc()) {
-            echo "id: " . $row["ID"]. " - Name: " . $row["Username"]. " " . $row["Password"]. "<br>";
+            if($row["Highscore"] > 0 ){
+                echo "<tr>";
+                echo "<td>" . $row["Username"]. "</td><td>" . $row["Highscore"]. "</td>";
+                echo "</tr>";
+            }
           }
         } else {
-          echo "0 results";
+          echo "Keine Highscores...";
         }
     }
 
+    function destroyCookie() {
+        setcookie("blaster", time() - (86400 * 7));
+    }
+
     function createCookie($cookieValue) {
-        setcookie("blaster", $cookieValue, time() + (86400 * 7), "/"); // 86400 = 1 day
+        setcookie("blaster", $cookieValue, time() + (86400 * 7), "/"); // 86400 = 1 tag
     }
 
     function getCookie() {
-        return $_COOKIE["blaster"];
+        if (isset($_COOKIE["blaster"])){ 
+            return $_COOKIE["blaster"];
+         } else {
+             return null;
+         }
     }
 
     function openDbCon() {

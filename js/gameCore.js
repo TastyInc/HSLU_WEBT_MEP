@@ -22,6 +22,8 @@ c.fillStyle = "gold";
 c.textAlign = "center";
 c.fillText("Press [SPACE] to play", WIDTH/2, HEIGHT/2);
 
+updateScore(0);
+
 //Schiest Projektil falls gestartet
 canvas.addEventListener('click', function(event) {
     if(gameStarted) {
@@ -176,7 +178,7 @@ function animateGameCanvas() {
 
         gameStarted = false;
         gameOver = false;
-        submitScore(score);
+        updateScore(score);
     }
 }
 
@@ -196,7 +198,7 @@ function collisionDetection(obj1, obj2) {
 }
 
 
-function submitScore(score) {
+function updateScore(score) {
     let formData = new FormData();
 
     formData.append("score", score)
@@ -205,21 +207,19 @@ function submitScore(score) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "server.php", true); //<- Asynchron
     xhr.onload = function (e) {
-      if (xhr.readyState === 4) {
+        if (xhr.readyState === 4) {
         if (xhr.status === 200) {
             console.log(xhr.responseText);
             document.getElementById("highscores").innerHTML = xhr.responseText;
         } else {
-            console.log(xhr.responseText + "KEKE");
             showErrorBox("Something went wrong: " + xhr.responseText);
         }
-      }
+        }
     };
     xhr.onerror = function (e) {
-        console.log(xhr.responseText + " ERRRRER");
         showErrorBox("Something went wrong: " + xhr.statusText);
     };
-    xhr.send(formData); 
+    xhr.send(formData);
 
 }
 
