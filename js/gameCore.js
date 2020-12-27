@@ -208,16 +208,11 @@ function updateScore(score) {
     xhr.open("POST", "server.php", true); //<- Asynchron
     xhr.onload = function (e) {
         if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-            console.log(xhr.responseText);
             document.getElementById("highscores").innerHTML = xhr.responseText;
-        } else {
-            showErrorBox("Something went wrong: " + xhr.responseText);
-        }
         }
     };
     xhr.onerror = function (e) {
-        showErrorBox("Something went wrong: " + xhr.statusText);
+        document.getElementById("highscores").innerHTML = "ERROR:" + xhr.responseText;
     };
     xhr.send(formData);
 

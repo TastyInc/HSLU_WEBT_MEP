@@ -48,24 +48,7 @@ function formHeaderClick(formName) {
     document.getElementById("form-" + formName).classList.add("active");
 }
 
-function showErrorBox(errorText){
-    let alertBox = document.getElementById("alertBox");
-
-    alertBox.innerHTML = "<p>" + errorText + "</p>";
-    alertBox.style.display = "block";
-    alertBox.className = "errorBox";
-}
-
-function showSuccessBox(successText){
-    let alertBox = document.getElementById("alertBox");
-
-    alertBox.innerHTML = "<p>" + successText + "</p>";
-    alertBox.style.display = "block";
-    alertBox.className = "successBox";
-}
-
 /* FORM Validation */
-
 function checkPwMatch() {
     let pw = document.getElementById('registerPw');
     let pwRepeat = document.getElementById('registerPwRepeat');
