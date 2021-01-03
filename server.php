@@ -126,13 +126,16 @@
         $result = $conn->query($sql);
         
         if ($result->num_rows > 0) {
-          while($row = $result->fetch_assoc()) {
-            if($row["Highscore"] > 0 ){
-                echo "<tr>";
-                echo "<td>" . $row["Username"]. "</td><td>" . $row["Highscore"]. "</td>";
-                echo "</tr>";
+            echo "<tr>";
+            echo "<th>Player</th><th>Highscore</th>";
+            echo "</tr>";
+            while($row = $result->fetch_assoc()) {
+                if($row["Highscore"] > 0 ){
+                    echo "<tr>";
+                    echo "<td>" . $row["Username"]. "</td><td class='score'>" . $row["Highscore"]. "</td>";
+                    echo "</tr>";
+                }
             }
-          }
         } else {
           echo "Keine Highscores...";
         }
