@@ -25,14 +25,14 @@
                         if(isset($_POST['login'])) {
                             echo '<h1>Login</h1>';
                             if(login($_POST['username'], $_POST['password'])){
-                                echo '<p>Sie wurden erfolgreich als <b>' . $_POST['username'] . '</b> eigeloggt!</p>';
+                                echo '<p>Sie wurden erfolgreich als <b>' . $_POST['username'] . '</b> eingeloggt!</p>';
                             } else {
                                 echo '<p>Etwas ist mit dem Login schief gegangen. Eventuell falsches Passwort...</p>';
                             }
                         }elseif(isset($_POST['register'])) {
                             echo '<h1>Registrierung</h1>';
-                            if(register($_POST['username'], $_POST['password'])){
-                                echo '<p>Sie haben sich erfolgreich als <b>' . $_POST['username'] . '</b> registriert und eigeloggt!</p>';
+                            if(register($_POST['username'], $_POST['password'], $_POST['passwordRepeat'])){
+                                echo '<p>Sie haben sich erfolgreich als <b>' . $_POST['username'] . '</b> registriert und eingeloggt!</p>';
                             } else {
                                 echo '<p>Etwas ist mit der Registrierung schief gegangen...</p>';
                             }
@@ -73,22 +73,26 @@
         }
     }
 
-    function register($username, $password){
-        $conn = openDbCon();
+    function register($username, $password, $passwordRepeat){
+        if($password == $passwordRepeat) {
+            $conn = openDbCon();
 
-        $stmt = $conn->prepare("INSERT INTO players (Username, Password) VALUES (?, ?)");
+            $stmt = $conn->prepare("INSERT INTO players (Username, Password) VALUES (?, ?)");
 
-        $password = md5($password);
+            $password = md5($password);
 
-        $stmt->bind_param("ss", $username, $password);
+            $stmt->bind_param("ss", $username, $password);
 
-        $stmt->execute();
+            $stmt->execute();
 
-        createCookie(md5($username . "blstr"));
+            createCookie(md5($username . "blstr"));
 
-        $stmt->close();
+            $stmt->close();
 
-        return true;
+            return true;
+        }else {
+            return false;
+        }
     }
 
     function updateScoreForPlayer($score) {
@@ -106,7 +110,6 @@
                     
                             $stmt->bind_param("ii", $score, $row["ID"]);
                             $stmt->execute();
-
 
                             break;
                         }
@@ -145,8 +148,9 @@
         setcookie("blaster", time() - (86400 * 7));
     }
 
+    //Das Cookie wird verwendet um zu überprüfen, wer aktuell eingeloggt ist. 
     function createCookie($cookieValue) {
-        setcookie("blaster", $cookieValue, time() + (86400 * 7), "/"); // 86400 = 1 tag
+        setcookie("blaster", $cookieValue, time() + (86400 * 7), "/"); //<- Mathematische Berechnung ;)
     }
 
     function getCookie() {

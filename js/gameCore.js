@@ -24,7 +24,7 @@ c.fillText("Press [SPACE] to play", WIDTH/2, HEIGHT/2);
 
 updateScore(0);
 
-//Schiest Projektil falls gestartet
+//Schiesst Projektil, falls Spiel gestartet
 canvas.addEventListener('click', function(event) {
     if(gameStarted) {
         player.shoot(event.clientX - canvas.offsetLeft, event.offsetY);
@@ -52,6 +52,7 @@ function createEntity(type) {
 
     let rng = Math.floor(Math.random() * 4);
 
+    //zufällige Position an einem der 4 Ränder
     switch(rng) {
         case 0:
             posX = 0
@@ -91,82 +92,88 @@ function createEntity(type) {
 
 //Animation Loop for Game Canvas
 function animateGameCanvas() {
-    let now = Date.now();
+    if (document.hasFocus()) {
+        let now = Date.now();
 
-    c.clearRect(0, 0, WIDTH, HEIGHT);
+        c.clearRect(0, 0, WIDTH, HEIGHT);
 
-    //Delta Time ausrechnen und jede Velocity der Entitäten damit berechnen 
-    let dt = (now - then);
-    totalTime += dt;
-    score += Math.round(dt / 10);
+        //Delta Time ausrechnen und jede Velocity der Entitäten damit berechnen (für eine konsistente Spielgeschwindigkeit)
+        let dt = (now - then);
+        totalTime += dt;
+        score += Math.round(dt / 10);
 
-    if(enemies.length <= Math.round(totalTime / 1000)) {
-        createEntity("enemy");
+        if(enemies.length <= Math.round(totalTime / 1000)) {
+            createEntity("enemy");
 
-        //10% Chance
-        if(Math.random() * 100 < 10) {
-            createEntity("coin");
-        }
-    }
-
-    player.update(dt);
-    player.draw();
-    
-    //umgekehrter For Loop damit splice richtig funktioniert...
-    for (var i = projectiles.length - 1; i >= 0; i--) {
-        projectiles[i].update(dt);
-        projectiles[i].draw();
-
-        if (projectiles[i].delete) {
-            projectiles.splice(i, 1);
-        }
-    }
-
-    for (var i = enemies.length - 1; i >= 0; i--) {
-        enemies[i].update(dt);
-        enemies[i].draw();
-
-        //collision gegner und spieler
-        if(collisionDetection(enemies[i], player)){
-            gameOver = true;
-        }
-
-        //collision gegner & Projektile
-        projectiles.forEach(proj => {
-            if(collisionDetection(enemies[i], proj)){
-                proj.delete = true;
-                enemies[i].delete = true;
-                score += 80;
+            //10% Chance
+            if(Math.random() * 100 < 10) {
+                createEntity("coin");
             }
-        })
-
-        if (enemies[i].delete) {
-            enemies.splice(i, 1);
         }
+
+        player.update(dt);
+        player.draw();
+        
+        //umgekehrter For Loop damit splice richtig funktioniert...
+        for (var i = projectiles.length - 1; i >= 0; i--) {
+            projectiles[i].update(dt);
+            projectiles[i].draw();
+
+            if (projectiles[i].delete) {
+                projectiles.splice(i, 1);
+            }
+        }
+
+        for (var i = enemies.length - 1; i >= 0; i--) {
+            enemies[i].update(dt);
+            enemies[i].draw();
+
+            //collision Gegner und spieler
+            if(collisionDetection(enemies[i], player)){
+                gameOver = true;
+            }
+
+            //collision Gegner & Projektile
+            projectiles.forEach(proj => {
+                if(collisionDetection(enemies[i], proj)){
+                    proj.delete = true;
+                    enemies[i].delete = true;
+                    score += 80;
+                }
+            })
+
+            if (enemies[i].delete) {
+                enemies.splice(i, 1);
+            }
+        }
+
+        for (var i = coins.length - 1; i >= 0; i--) {
+            coins[i].update(dt);
+            coins[i].draw(player.coins);
+
+            //collision von Coins und Spieler
+            if(collisionDetection(coins[i], player)){
+                coins[i].delete = true;
+                score += 450;
+            }
+
+            if (coins[i].delete) {
+                coins.splice(i, 1);
+            }
+        }
+
+        c.font = "20px Courier";
+        c.fillStyle = "rgb(255,255,255)";
+        c.textAlign = "right";
+        c.fillText(score, 120, 40);
+
+        then = now;
+
+    } else {
+        then = Date.now();
     }
 
-    for (var i = coins.length - 1; i >= 0; i--) {
-        coins[i].update(dt);
-        coins[i].draw(player.coins);
-
-        //collision von coins und spieler
-        if(collisionDetection(coins[i], player)){
-            coins[i].delete = true;
-            score += 450;
-        }
-
-        if (coins[i].delete) {
-            coins.splice(i, 1);
-        }
-    }
-
-    c.font = "20px Courier";
-    c.fillStyle = "rgb(255,255,255)";
-    c.textAlign = "right";
-    c.fillText(score, 120, 40);
-
-    then = now;
-
+    //Animation nur, solang spiel auch am laufen ist
     if(!gameOver){
         requestAnimationFrame(animateGameCanvas);
     } else {
@@ -215,7 +222,6 @@ function updateScore(score) {
         document.getElementById("highscores").innerHTML = "ERROR:" + xhr.responseText;
     };
     xhr.send(formData);
-
 }
 
 
